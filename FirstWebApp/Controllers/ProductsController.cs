@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace FirstWebApp.Controllers
 {
@@ -7,6 +8,21 @@ namespace FirstWebApp.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly HeaderRemoveConfig _headerConfig;
+
+        public ProductsController(
+            IConfiguration configuration,
+            IOptionsSnapshot<HeaderRemoveConfig> options)
+        {
+            var logLevel = configuration["Logging:LogLevel:Default"];
+            this._headerConfig = options.Value;
+        }
+
+
+        [HttpGet("ConfigValue")]
+        public ActionResult<HeaderRemoveConfig> GetConfig() {
+            return Ok(this._headerConfig);
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(404)]
@@ -28,6 +44,7 @@ namespace FirstWebApp.Controllers
         }
 
 
+        
 
 
     }
