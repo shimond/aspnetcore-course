@@ -1,6 +1,9 @@
-var builder = WebApplication.CreateBuilder(args);
+using FirstWebApp.Models.Config;
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
+builder.Services.Configure<HeaderRemoveConfig>(builder.Configuration.GetSection("HeaderToRemove"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -9,22 +12,24 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
 app.Use(async (context, next) => {
-    await context.Response.WriteAsync(" MID 1 Start ");
-    await next();
-    await context.Response.WriteAsync(" MID 1 End   ");
+	try
+	{
+        await next();
+    }
+	catch (Exception)
+	{
+
+		throw;
+	}
 });
 
-app.Use(async (context, next) => {
-    await context.Response.WriteAsync(" MID 2 Start ");
-    await next();
-    await context.Response.WriteAsync(" MID 2 End   ");
-});
+app.UseRemoveHeadersMiddleware();
 
-
-app.Run(async (context) => {
-    await context.Response.WriteAsync(" Hello world!    ");
+app.Run(async (context) =>
+{
+	var valueFromConfig = app.Configuration["Logging:LogLevel:Default"];
+	await context.Response.WriteAsync(valueFromConfig);
 });
 
 app.Run();
