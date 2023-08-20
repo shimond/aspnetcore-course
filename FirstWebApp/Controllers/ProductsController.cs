@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FirstWebApp.Models.Dtos;
+using FirstWebApp.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -9,15 +11,24 @@ namespace FirstWebApp.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly HeaderRemoveConfig _headerConfig;
+        private readonly IProductsRepository _productsRepository;
 
         public ProductsController(
             IConfiguration configuration,
+            IProductsRepository productsRepository,
             IOptionsSnapshot<HeaderRemoveConfig> options)
         {
+            _productsRepository = productsRepository;
             var logLevel = configuration["Logging:LogLevel:Default"];
             this._headerConfig = options.Value;
         }
 
+        [HttpGet]
+        public ActionResult<List<Product>> Get()
+        {
+            var result = _productsRepository.GetAllProducts();
+            return Ok(result);
+        }
 
         [HttpGet("ConfigValue")]
         public ActionResult<HeaderRemoveConfig> GetConfig() {
@@ -42,10 +53,5 @@ namespace FirstWebApp.Controllers
             //p.Name = "asdasd";
             return Ok(p);
         }
-
-
-        
-
-
     }
 }

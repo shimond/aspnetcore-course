@@ -16,7 +16,10 @@ namespace FirstWebApp.Middlewares
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext, IOptionsSnapshot<HeaderRemoveConfig> options)
+        public Task Invoke(
+            HttpContext httpContext, 
+            IOptionsSnapshot<HeaderRemoveConfig> options, 
+            IProductsRepository productsRepo)
         {
             var headerConfig = options.Value;
             if (headerConfig.Enabled)

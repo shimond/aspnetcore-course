@@ -1,4 +1,4 @@
-﻿namespace FirstWebApp.Models;
+﻿namespace FirstWebApp.Models.Dtos;
 
 public record ProductDto
 {

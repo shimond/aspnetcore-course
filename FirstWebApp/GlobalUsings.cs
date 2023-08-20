@@ -2,3 +2,5 @@
 global using FirstWebApp;
 global using FirstWebApp.Middlewares;
 global using FirstWebApp.Models.Config;
+global using FirstWebApp.Models.DataEntities;
+global using FirstWebApp.Contracts;
