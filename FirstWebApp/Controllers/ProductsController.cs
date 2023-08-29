@@ -1,6 +1,7 @@
 ﻿using FirstWebApp.Models.Dtos;
 using FirstWebApp.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -10,17 +11,11 @@ namespace FirstWebApp.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly HeaderRemoveConfig _headerConfig;
         private readonly IProductsRepository _productsRepository;
 
-        public ProductsController(
-            IConfiguration configuration,
-            IProductsRepository productsRepository,
-            IOptionsSnapshot<HeaderRemoveConfig> options)
+        public ProductsController(IProductsRepository productsRepository)
         {
             _productsRepository = productsRepository;
-            var logLevel = configuration["Logging:LogLevel:Default"];
-            this._headerConfig = options.Value;
         }
 
         [HttpGet]
@@ -30,28 +25,61 @@ namespace FirstWebApp.Controllers
             return Ok(result);
         }
 
-        [HttpGet("ConfigValue")]
-        public ActionResult<HeaderRemoveConfig> GetConfig() {
-            return Ok(this._headerConfig);
-        }
-
         [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(Product))]
         [ProducesResponseType(404)]
-        [ProducesResponseType(200)]
-        public ActionResult<string> GetString(int id, string? name, int? number)
+        public async Task<ActionResult<Product>> GetById(int id)
         {
-            if(id > 100)
+            var result = await _productsRepository.GetProductById(id);
+            if (result == null)
             {
                 return NotFound();
             }
-            return Ok(DateTime.Now.ToLongTimeString());
+            else
+            {
+                return Ok(result);
+            }
         }
 
-        [HttpPost("SendProduct/{name}")]
-        public ActionResult<ProductDto> SendAndGetProduct(string name, ProductDto p) {
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200, Type = typeof(Product))]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<Product>> DeleteItem(int id)
+        {
+            var result = await _productsRepository.GetProductById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
 
-            //p.Name = "asdasd";
-            return Ok(p);
+            await _productsRepository.DeleteItem(id);
+
+            return Ok(result);
         }
+
+
+        //api/products/3
+        [HttpPut("{id}")]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<Product>> UpdateItem(int id, Product product)
+        {
+            var result = await _productsRepository.GetProductById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            await _productsRepository.UpdateProduct(id, product);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(201, Type = typeof(Product))]
+        public async Task<ActionResult<Product>> AddNewProduct(Product product)
+        {
+            var addedProduct = await _productsRepository.AddNewProduct(product);
+            return Created($"api/products/{addedProduct.Id}", addedProduct);
+        }
+
     }
 }
