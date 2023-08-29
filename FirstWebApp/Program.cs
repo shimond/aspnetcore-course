@@ -1,4 +1,5 @@
 using FirstWebApp.Services;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(action => action.AddPolicy("aspnet-course", 
-    config =>  config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+builder.Services.AddCors(action => action.AddPolicy("aspnet-course",
+    config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 //Resolve DI
 builder.Services.AddSingleton<IProductsRepository, ProductsRepository>();
@@ -31,4 +32,3 @@ app.UseRemoveHeadersMiddleware();
 app.MapControllers();
 
 app.Run();
-
