@@ -26,23 +26,3 @@ public class ProductsRepository : IProductsRepository
 
 }
 
-
-public class ProductsRepository2 : IProductsRepository
-{
-    public List<Product> GetAllProducts()
-    {
-        return new List<Product>()
-        {
-            new Product
-            {
-                    Id=2,
-                    Name="Bisli",
-                    Producer="Osem",
-                    Amount = 99,
-                    Description = "The best product ever",
-                    Price = 12.6m
-            }
-        };
-    }
-
-}
