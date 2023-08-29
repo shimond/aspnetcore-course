@@ -24,9 +24,9 @@ namespace FirstWebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Product>> Get()
+        public async Task<ActionResult<List<Product>>> Get()
         {
-            var result = _productsRepository.GetAllProducts();
+            var result = await _productsRepository.GetAllProducts();
             return Ok(result);
         }
 

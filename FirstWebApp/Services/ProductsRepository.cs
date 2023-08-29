@@ -6,8 +6,10 @@ public class ProductsRepository : IProductsRepository
     {
             
     }
-    public List<Product> GetAllProducts()
+    public async Task<List<Product>> GetAllProducts()
     {
+        await Task.Delay(1000);
+
         return new List<Product>()
         {
             new Product
