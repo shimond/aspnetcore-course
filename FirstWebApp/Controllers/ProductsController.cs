@@ -1,9 +1,4 @@
-﻿using FirstWebApp.Models.Dtos;
-using FirstWebApp.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace FirstWebApp.Controllers
 {
@@ -19,10 +14,12 @@ namespace FirstWebApp.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<Product>))]
+
         public async Task<ActionResult<List<Product>>> Get()
         {
             var result = await _productsRepository.GetAllProducts();
-            return Ok(result);
+            return Ok("Wow");
         }
 
         [HttpGet("{id}")]
