@@ -1,50 +1,42 @@
-﻿namespace FirstWebApp.Services;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace FirstWebApp.Services;
 
 public class ProductsRepository : IProductsRepository
 {
-    private List<Product> _products = new List<Product>();
+    private readonly CourseDbContext _courseDbContext;
 
-    public ProductsRepository()
+    public ProductsRepository(CourseDbContext courseDbContext)
     {
-        _products.Add(new Product
-        {
-            Id = 1,
-            Name = "Bamba",
-            Producer = "Osem",
-            Amount = 99,
-            Description = "The best product ever",
-            Price = 12.6m
-        });
+        this._courseDbContext = courseDbContext;
     }
 
-    public Task<Product> AddNewProduct(Product product)
+    public async Task<Product> AddNewProduct(Product product)
     {
-        var newId = this._products.Max(x => x.Id) + 1;
-        var productToInsert = product with { Id = newId };
-        _products.Add(productToInsert);
-        return Task.FromResult(productToInsert);
+        _courseDbContext.Products.Add(product);
+        await _courseDbContext.SaveChangesAsync();
+        return product;
     }
 
     public async Task DeleteItem(int id)
     {
-        await Task.Delay(100);
-        var item = this._products.FirstOrDefault(x=> x.Id == id);
+        var item = await _courseDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
         if(item != null)
         {
-            this._products.Remove(item);
+            _courseDbContext.Products.Remove(item);
         }
+        await _courseDbContext.SaveChangesAsync();
     }
 
     public async Task<List<Product>> GetAllProducts()
     {
-        await Task.Delay(1000);
-        return _products;
+        var products = await _courseDbContext.Products.ToListAsync();
+        return products;
     }
 
     public async Task<Product?> GetProductById(int id)
     {
-        await Task.Delay(500);
-        var item = this._products.FirstOrDefault(x => x.Id == id);
+        var item = await _courseDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
         {
             return null;
@@ -54,22 +46,9 @@ public class ProductsRepository : IProductsRepository
 
     public async Task<Product> UpdateProduct(int id, Product product)
     {
-        await Task.Delay(500);
-        var item = this._products.First(x => x.Id == id);
-
-        var itemToUpdate  = item with { Producer = product.Producer, Amount = product.Amount, Description = product.Description, Price = product.Price, Name = product.Name };
-        _products =  _products.Select(item => { 
-            if(item.Id  == id)
-            {
-                return itemToUpdate;
-            }
-            else
-            {
-                return item;
-            }
-        }).ToList();
-
-        return itemToUpdate;
+        _courseDbContext.Products.Update(product);
+        await _courseDbContext.SaveChangesAsync();
+        return product;
     }
 }
 
