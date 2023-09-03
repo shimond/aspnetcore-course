@@ -1,5 +1,4 @@
-﻿
-using FirstWebApp.Models.DataEntities;
+﻿using FluentValidation;
 
 namespace FirstWebApp.EndPoints;
 
@@ -21,10 +20,11 @@ public static class ProductsEndPoints
         productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct));
     }
 
-    static async Task<Ok<List<Product>>> GetAllProducts(IProductsRepository repository)
+    static async Task<Ok<List<ProductDto>>> GetAllProducts(IProductsRepository repository, IMapper mapper)
     {
         var result = await repository.GetAllProducts();
-        return TypedResults.Ok(result);
+        var mappedResult = mapper.Map<List<ProductDto>>(result);
+        return TypedResults.Ok(mappedResult);
     }
 
     static async Task<Results<NotFound, Ok<Product>>> GetProductById(int id, IProductsRepository repository)
@@ -62,10 +62,20 @@ public static class ProductsEndPoints
     }
 
 
-    static async Task<Created<Product>> AddNewProduct(Product product, IProductsRepository repository)
+    static async Task<Results<Created<ProductDto>, ValidationProblem>> AddNewProduct(ProductDto product, 
+        IValidator<ProductDto> validator,
+        IProductsRepository repository, 
+        IMapper mapper)
     {
-        var addedProduct = await repository.AddNewProduct(product);
-        return TypedResults.Created($"api/products/{addedProduct.Id}", addedProduct);
+        var validationResult = validator.Validate(product);
+        if (!validationResult.IsValid)
+        {
+            return TypedResults.ValidationProblem(validationResult.ToDictionary());
+        }
+        var mappedProduct = mapper.Map<Product>(product);
+        var addedProduct = await repository.AddNewProduct(mappedProduct);
+        var productResult = mapper.Map<ProductDto>(addedProduct);
+        return TypedResults.Created($"api/products/{addedProduct.Id}", productResult);
     }
 
 }

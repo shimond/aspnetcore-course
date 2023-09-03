@@ -9,3 +9,5 @@ global using FirstWebApp.Services;
 global using FirstWebApp.Infra.ApplicationDbContext;
 global using FirstWebApp.EndPoints;
 global using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
+global using FirstWebApp.Models.Dtos;
