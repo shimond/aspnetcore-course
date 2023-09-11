@@ -11,3 +11,5 @@ global using FirstWebApp.EndPoints;
 global using Microsoft.EntityFrameworkCore;
 global using AutoMapper;
 global using FirstWebApp.Models.Dtos;
+global using FluentValidation;
+global using System.Reflection;

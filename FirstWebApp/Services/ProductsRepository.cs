@@ -36,7 +36,7 @@ public class ProductsRepository : IProductsRepository
 
     public async Task<Product?> GetProductById(int id)
     {
-        var item = await _courseDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var item = await _courseDbContext.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
         {
             return null;
