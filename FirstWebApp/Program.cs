@@ -6,7 +6,8 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<CourseDbContext>(o => o.UseInMemoryDatabase("CourseDb"));
-builder.Services.AddDbContext<CourseDbContext>(o => o.UseSqlServer("name=ConnectionStrings:courseDb")); //AddScoped
+//builder.Services.AddDbContext<CourseDbContext>(o => o.UseSqlServer("name=ConnectionStrings:courseDb"));
+builder.Services.AddDbContext<AspnetCourseFromDbContext>(o => o.UseSqlServer("name=ConnectionStrings:courseDbFirst"));
 builder.Services.AddCors(action => action.AddPolicy("aspnet-course",
     config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 

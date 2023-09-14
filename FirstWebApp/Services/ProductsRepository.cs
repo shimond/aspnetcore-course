@@ -4,9 +4,9 @@ namespace FirstWebApp.Services;
 
 public class ProductsRepository : IProductsRepository
 {
-    private readonly CourseDbContext _courseDbContext;
+    private readonly AspnetCourseFromDbContext _courseDbContext;
 
-    public ProductsRepository(CourseDbContext courseDbContext)
+    public ProductsRepository(AspnetCourseFromDbContext courseDbContext)
     {
         this._courseDbContext = courseDbContext;
     }

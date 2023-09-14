@@ -1,4 +1,6 @@
-﻿namespace FirstWebApp.Contracts;
+﻿
+
+namespace FirstWebApp.Contracts;
 
 public interface IProductsRepository
 {
