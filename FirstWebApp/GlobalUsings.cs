@@ -1,0 +1,16 @@
+﻿global using FirstWebApp.Models;
+global using FirstWebApp;
+global using FirstWebApp.Middlewares;
+global using FirstWebApp.Models.Config;
+// global using FirstWebApp.Models.DataEntities;
+global using FirstWebApp.Contracts;
+global using Microsoft.AspNetCore.Http.HttpResults;
+global using FirstWebApp.Services;
+global using FirstWebApp.Infra.ApplicationDbContext;
+global using FirstWebApp.EndPoints;
+global using Microsoft.EntityFrameworkCore;
+global using AutoMapper;
+global using FirstWebApp.Models.Dtos;
+global using FluentValidation;
+global using System.Reflection;
+global using FirstWebApp.EntitiesFromDb;
