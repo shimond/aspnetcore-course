@@ -1,10 +1,7 @@
-﻿using FluentValidation;
-
-namespace FirstWebApp.Validations;
+﻿namespace FirstWebApp.Validations;
 
 public class ProductDtoValidator : AbstractValidator<ProductDto>
 {
-
     public ProductDtoValidator()
     {
         RuleFor(x => x.ProductName).NotEmpty().NotNull();

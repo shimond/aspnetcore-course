@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace FirstWebApp.EndPoints;
+﻿namespace FirstWebApp.EndPoints;
 
 public static class ProductsEndPoints
 {
@@ -27,38 +25,38 @@ public static class ProductsEndPoints
         return TypedResults.Ok(mappedResult);
     }
 
-    static async Task<Results<NotFound, Ok<Product>>> GetProductById(int id, IProductsRepository repository)
+    static async Task<Results<NotFound, Ok<ProductDto>>> GetProductById(int id, IProductsRepository repository, IMapper mapper)
     {
         var result = await repository.GetProductById(id);
-        if (result == null)
+        if (result is null)
         {
             return TypedResults.NotFound();
         }
-        return TypedResults.Ok(result);
+        return TypedResults.Ok(mapper.Map<ProductDto>(result));
     }
 
-    static async Task<Results<NotFound, Ok<Product>>> DeleteItem(int id, IProductsRepository repository)
+    static async Task<Results<NotFound, Ok<ProductDto>>> DeleteItem(int id, IProductsRepository repository, IMapper mapper)
     {
         var result = await repository.GetProductById(id);
-        if (result == null)
+        if (result is null)
         {
             return TypedResults.NotFound();
         }
         await repository.DeleteItem(id);
-        return TypedResults.Ok(result);
+        return TypedResults.Ok(mapper.Map<ProductDto>(result));
     }
 
 
-    static async Task<Results<NotFound, Ok<Product>>> UpdateProduct(int id, Product product, IProductsRepository repository)
+    static async Task<Results<NotFound, Ok<ProductDto>>> UpdateProduct(int id, ProductEntity product, IProductsRepository repository, IMapper mapper)
     {
         var result = await repository.GetProductById(id);
-        if (result == null)
+        if (result is null)
         {
             return TypedResults.NotFound();
         }
 
         var productAfterUpdate = await repository.UpdateProduct(id, product);
-        return TypedResults.Ok(productAfterUpdate);
+        return TypedResults.Ok(mapper.Map<ProductDto>(productAfterUpdate));
     }
 
 
@@ -72,7 +70,7 @@ public static class ProductsEndPoints
         {
             return TypedResults.ValidationProblem(validationResult.ToDictionary());
         }
-        var mappedProduct = mapper.Map<Product>(product);
+        var mappedProduct = mapper.Map<ProductEntity>(product)!;
         var addedProduct = await repository.AddNewProduct(mappedProduct);
         var productResult = mapper.Map<ProductDto>(addedProduct);
         return TypedResults.Created($"api/products/{addedProduct.Id}", productResult);

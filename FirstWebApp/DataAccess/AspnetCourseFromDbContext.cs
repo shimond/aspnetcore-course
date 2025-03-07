@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
-namespace FirstWebApp.EntitiesFromDb;
+﻿namespace FirstWebApp.DataAccess;
 
 public partial class AspnetCourseFromDbContext : DbContext
 {
@@ -15,10 +11,8 @@ public partial class AspnetCourseFromDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<ProductEntity> Products { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:courseDbFirst");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

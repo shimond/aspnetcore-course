@@ -9,4 +9,4 @@ public record ProductDto
 }
 
 
-public record ProductDtoSingleLine(int id, string name, string desc, double price);
+public record ProductDtoOneLine(int id, string name, string desc, double price);
