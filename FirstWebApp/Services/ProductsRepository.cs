@@ -1,40 +1,33 @@
 ﻿namespace FirstWebApp.Services;
 
-public class ProductsRepository : IProductsRepository
+public class ProductsRepository(AspnetCourseFromDbContext courseDbContext) : IProductsRepository
 {
-    private readonly AspnetCourseFromDbContext _courseDbContext;
-
-    public ProductsRepository(AspnetCourseFromDbContext courseDbContext)
-    {
-        this._courseDbContext = courseDbContext;
-    }
-
     public async Task<ProductEntity> AddNewProduct(ProductEntity product)
     {
-        _courseDbContext.Products.Add(product);
-        await _courseDbContext.SaveChangesAsync();
+        courseDbContext.Products.Add(product);
+        await courseDbContext.SaveChangesAsync();
         return product;
     }
 
     public async Task DeleteItem(int id)
     {
-        var item = await _courseDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var item = await courseDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
         if (item != null)
         {
-            _courseDbContext.Products.Remove(item);
+            courseDbContext.Products.Remove(item);
         }
-        await _courseDbContext.SaveChangesAsync();
+        await courseDbContext.SaveChangesAsync();
     }
 
     public async Task<List<ProductEntity>> GetAllProducts()
     {
-        var products = await _courseDbContext.Products.ToListAsync();
+        var products = await courseDbContext.Products.ToListAsync();
         return products;
     }
 
     public async Task<ProductEntity?> GetProductById(int id)
     {
-        var item = await _courseDbContext.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        var item = await courseDbContext.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
         {
             return null;
@@ -44,8 +37,8 @@ public class ProductsRepository : IProductsRepository
 
     public async Task<ProductEntity> UpdateProduct(int id, ProductEntity product)
     {
-        _courseDbContext.Products.Update(product);
-        await _courseDbContext.SaveChangesAsync();
+        courseDbContext.Products.Update(product);
+        await courseDbContext.SaveChangesAsync();
         return product;
     }
 
