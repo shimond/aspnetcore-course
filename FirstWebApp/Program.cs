@@ -1,8 +1,10 @@
 
+using FirstWebApp.MappingProfiles;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(ProductsProfile));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AspnetCourseFromDbContext>(o => o.UseInMemoryDatabase("coursesDatabase"));
