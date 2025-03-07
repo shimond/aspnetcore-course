@@ -14,6 +14,10 @@ builder.Services.AddCors(action => action.AddPolicy("aspnet-course",
 
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 
+
+builder.Services.AddKeyedScoped<IPaymentProcessor, StripePaymentProcessor>("stripe");
+builder.Services.AddKeyedScoped<IPaymentProcessor, PaypalPaymentProcessor>("paypal");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,4 +29,5 @@ if (app.Environment.IsDevelopment())
 app.UseCors("aspnet-course");
 app.UseHttpsRedirection();
 app.MapProducts();
+app.MapPayments();
 app.Run();
