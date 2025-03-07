@@ -1,0 +1,35 @@
+﻿@FirstWebApp_HostAddress = https://localhost:5528
+GET {{HostAddress }}/products
+
+###
+
+POST {{HostAddress}}/products
+Content-Type: application/json
+
+{
+  "id": 0,
+  "productName": "Bisli",
+  "description": "dec of ",
+  "price": 18
+}
+###
+
+# @name getById
+GET {{HostAddress }}/products/{{id}}
+
+###
+
+
+
+POST {{FirstWebApp_HostAddress}}/payments
+Content-Type: application/json
+
+{
+  "amount": {{getById.response.body.$.price}},
+  "paymentType": "paypal"
+}
+
+###
+
+
+# https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0
