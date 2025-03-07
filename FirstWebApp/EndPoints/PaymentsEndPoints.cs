@@ -10,10 +10,18 @@ public static class PaymentsEndPoints
         paymentsGroup.MapPost("", Pay).WithName(nameof(Pay));
     }
 
-    static async Task<Ok<string>> Pay(PaymentRequestDto dto, [FromKeyedServices("paypal")]IPaymentProcessor processor)
+    static async Task<Results<Ok<string>, NotFound>> Pay(PaymentRequestDto dto, IServiceProvider serviceProvider)
     {
-        await processor.Pay(dto.Amount);
-        return TypedResults.Ok("OK!");
+        var processor = serviceProvider.GetKeyedService<IPaymentProcessor>(dto.paymentType);
+        if (processor is not null)
+        {
+            await processor.Pay(dto.Amount);
+            return TypedResults.Ok("OK!");
+        }
+        else
+        {
+            return TypedResults.NotFound(); // conflict
+        }
     }
 
 }

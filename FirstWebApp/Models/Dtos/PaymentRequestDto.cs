@@ -1,3 +1,3 @@
 ﻿namespace FirstWebApp.Models.Dtos;
 
-public record PaymentRequestDto(decimal Amount);
+public record PaymentRequestDto(decimal Amount, string paymentType);
