@@ -7,18 +7,19 @@ public static class ProductsEndPoints
 
     public static void MapProducts(this WebApplication app)
     {
-        var productsGroup = app.MapGroup("products").WithTags("Products");
+        var productsGroup = app.MapGroup("products")
+            .RequireAuthorization()
+            .WithTags("Products");
 
-        productsGroup.MapGet("", GetAllProducts).WithName(nameof(GetAllProducts));
+        productsGroup.MapGet("", GetAllProducts).WithName(nameof(GetAllProducts)).AllowAnonymous();
 
         productsGroup.MapGet("{id}", GetProductById).WithName(nameof(GetProductById));
 
-        productsGroup.MapDelete("{id}", DeleteItem).WithName(nameof(DeleteItem))
-            .RequireAuthorization(AuthorizationPolicies.ADMIN_POLICY);
+        productsGroup.MapPut("{id}", UpdateProduct).WithName(nameof(UpdateProduct)); 
 
-        productsGroup.MapPut("{id}", UpdateProduct).WithName(nameof(UpdateProduct)).RequireAuthorization(); 
+        productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct));
 
-        productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct)).RequireAuthorization();
+        productsGroup.MapDelete("{id}", DeleteItem).WithName(nameof(DeleteItem)).RequireAuthorization(AuthorizationPolicies.ADMIN_POLICY);
     }
 
     static async Task<Ok<List<ProductDto>>> GetAllProducts(IProductsRepository repository, IMapper mapper)

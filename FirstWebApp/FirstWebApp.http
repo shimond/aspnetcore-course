@@ -2,26 +2,29 @@
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNoaW1vbmRAYW55LXRlY2hzLmNvLmlsIiwic3ViIjoic2hpbW9uZEBhbnktdGVjaHMuY28uaWwiLCJqdGkiOiJlMGY1MTI5ZiIsInJvbGUiOiJhZG1pbiIsImNvbG9yIjoicmVkIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NTIyMSIsImh0dHBzOi8vbG9jYWxob3N0OjU1MjgiLCJodHRwOi8vbG9jYWxob3N0OjUyMjMiXSwibmJmIjoxNzQxNTUxNDU2LCJleHAiOjE3NDk1MDAyNTYsImlhdCI6MTc0MTU1MTQ1NywiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.45jKXCSjdwUdh07NVMAvpv7RecTfDlZxwhgZSn7m3Jc
 @userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlNoaW1vIiwic3ViIjoiU2hpbW8iLCJqdGkiOiIxMjEzZjhlZSIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjUyMjEiLCJodHRwczovL2xvY2FsaG9zdDo1NTI4IiwiaHR0cDovL2xvY2FsaG9zdDo1MjIzIl0sIm5iZiI6MTc0MTU1MDQzMCwiZXhwIjoxNzQ5NDk5MjMwLCJpYXQiOjE3NDE1NTA0MzIsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.JsF6Nx5qn8TVYduenMaIPbKj_WeooO6KyVu4-CeQjfw
 
-GET {{HostAddress }}/products
-
-###
-
-DELETE {{HostAddress }}/products/2
-Content-Type: application/json
-Authorization: Bearer  {{adminToken}}
-
-###
-
+### LOGIN
+###################
 # @name login
-
 POST {{FirstWebApp_HostAddress}}/auth/Login
 Content-Type: application/json
 {
-  "userName": "david",
-  "password": "12345678"
+  "userName": "admin",
+  "password": "Aa123456"
 }
-###
 
+### GET ALL PRODUCTS
+
+GET {{HostAddress }}/products
+
+
+### DELETE PRODUCT
+###################
+DELETE {{HostAddress }}/products/1
+Content-Type: application/json
+Authorization: Bearer  {{login.response.body.$.token}}
+
+### Add NEW PRODUCT
+###################
 POST {{HostAddress}}/products
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.$.token}}
@@ -32,15 +35,15 @@ Authorization: Bearer {{login.response.body.$.token}}
   "description": "dec of",
   "price": 16
 }
-###
 
+
+### Add NEW PRODUCT
+###################
 # @name getById
 GET {{HostAddress }}/products/{{id}}
 
-###
-
-
-
+### Add PAYMENT
+###################
 POST {{FirstWebApp_HostAddress}}/payments
 Content-Type: application/json
 
@@ -48,6 +51,4 @@ Content-Type: application/json
   "amount": {{getById.response.body.$.price}},
   "paymentType": "paypal"
 }
-
-###
 

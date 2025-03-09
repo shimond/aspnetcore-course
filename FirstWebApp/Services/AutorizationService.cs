@@ -3,8 +3,17 @@
 
 public class AuthorizationService : IAuthorizationService
 {
-    public Task<bool> IsUserValid(string login, string password)
+    public async Task<UserInfo?> GetUserInfo(string login, string password)
     {
-        return Task.FromResult(login == "david" && password == "12345678");
+        await Task.Delay(1000);
+        if(login == "david" && password == "12345678")
+        {
+            return new UserInfo(login, "david@gmail.com", "user");
+        }
+        else if(login == "admin" && password == "Aa123456")
+        {
+            return new UserInfo(login, "admin@gmail.com", "admin");
+        }
+        return null;
     }
 }

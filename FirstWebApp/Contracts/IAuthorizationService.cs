@@ -2,5 +2,5 @@
 
 public interface IAuthorizationService
 {
-    Task<bool> IsUserValid(string login, string password);
+    Task<UserInfo?> GetUserInfo(string login, string password);
 }

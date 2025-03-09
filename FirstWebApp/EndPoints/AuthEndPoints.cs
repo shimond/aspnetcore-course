@@ -21,8 +21,8 @@ public static class AuthEndPoints
         var bearerInformation = bearerOptions.Value;
 
         // Validate user credentials
-        var isValid = await authorizationService.IsUserValid(request.UserName, request.Password);
-        if (!isValid)
+        var userInfo = await authorizationService.GetUserInfo(request.UserName, request.Password);
+        if (userInfo is null)
         {
             // Return unauthorized result if credentials are invalid
             return TypedResults.Unauthorized();
@@ -41,6 +41,9 @@ public static class AuthEndPoints
         {
             claims.Add(new Claim(JwtRegisteredClaimNames.Aud, aud));
         }
+
+        // Add the relevant role
+        claims.Add(new Claim(ClaimTypes.Role, userInfo.Role));
 
         // Retrieve signing key information
         var signKeyInfo = bearerInformation.SigningKeys.First(x => x.Issuer == bearerInformation.ValidIssuer);
