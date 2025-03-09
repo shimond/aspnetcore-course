@@ -13,12 +13,16 @@ builder.Services.AddCors(action => action.AddPolicy("aspnet-course",
     config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-
+builder.Services.AddAntiforgery();
 
 builder.Services.AddKeyedScoped<IPaymentProcessor, StripePaymentProcessor>("stripe");
 builder.Services.AddKeyedScoped<IPaymentProcessor, PaypalPaymentProcessor>("paypal");
 
 var app = builder.Build();
+app.UseRequestLocalization(options =>
+{
+    options.CultureInfoUseUserOverride = false;
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -28,6 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("aspnet-course");
 app.UseHttpsRedirection();
+app.UseAntiforgery();
 app.MapProducts();
 app.MapPayments();
 app.Run();

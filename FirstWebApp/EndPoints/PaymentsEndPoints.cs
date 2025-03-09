@@ -1,4 +1,6 @@
-﻿namespace FirstWebApp.EndPoints;
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace FirstWebApp.EndPoints;
 
 public static class PaymentsEndPoints
 {
@@ -6,7 +8,6 @@ public static class PaymentsEndPoints
     public static void MapPayments(this WebApplication app)
     {
         var paymentsGroup = app.MapGroup("payments").WithTags("Payments");
-
         paymentsGroup.MapPost("", Pay).WithName(nameof(Pay));
     }
 
