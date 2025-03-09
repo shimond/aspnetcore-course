@@ -2,7 +2,8 @@
 using FirstWebApp.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddAuthorization();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(ProductsProfile));
 builder.Services.AddEndpointsApiExplorer();
@@ -19,6 +20,8 @@ builder.Services.AddKeyedScoped<IPaymentProcessor, StripePaymentProcessor>("stri
 builder.Services.AddKeyedScoped<IPaymentProcessor, PaypalPaymentProcessor>("paypal");
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRequestLocalization(options =>
 {
     options.CultureInfoUseUserOverride = false;

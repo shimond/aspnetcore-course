@@ -15,7 +15,7 @@ public static class ProductsEndPoints
 
         productsGroup.MapPut("{id}", UpdateProduct).WithName(nameof(UpdateProduct));
 
-        productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct));
+        productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct)).RequireAuthorization();
     }
 
     static async Task<Ok<List<ProductDto>>> GetAllProducts(IProductsRepository repository, IMapper mapper)
