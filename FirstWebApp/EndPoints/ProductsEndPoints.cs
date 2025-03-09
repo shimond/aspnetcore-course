@@ -1,4 +1,6 @@
-﻿namespace FirstWebApp.EndPoints;
+﻿using FirstWebApp.Authorization;
+
+namespace FirstWebApp.EndPoints;
 
 public static class ProductsEndPoints
 {
@@ -11,9 +13,10 @@ public static class ProductsEndPoints
 
         productsGroup.MapGet("{id}", GetProductById).WithName(nameof(GetProductById));
 
-        productsGroup.MapDelete("{id}", DeleteItem).WithName(nameof(DeleteItem));
+        productsGroup.MapDelete("{id}", DeleteItem).WithName(nameof(DeleteItem))
+            .RequireAuthorization(AuthorizationPolicies.ADMIN_POLICY);
 
-        productsGroup.MapPut("{id}", UpdateProduct).WithName(nameof(UpdateProduct));
+        productsGroup.MapPut("{id}", UpdateProduct).WithName(nameof(UpdateProduct)).RequireAuthorization(); 
 
         productsGroup.MapPost("", AddNewProduct).WithName(nameof(AddNewProduct)).RequireAuthorization();
     }
