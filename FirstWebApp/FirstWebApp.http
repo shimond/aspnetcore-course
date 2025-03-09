@@ -11,15 +11,26 @@ Content-Type: application/json
 Authorization: Bearer  {{adminToken}}
 
 ###
+
+# @name login
+
+POST {{FirstWebApp_HostAddress}}/auth/Login
+Content-Type: application/json
+{
+  "userName": "david",
+  "password": "12345678"
+}
+###
+
 POST {{HostAddress}}/products
 Content-Type: application/json
-Authorization: Bearer {{userToken}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 {
   "id": 0,
-  "productName": "adasdasdasd",
-  "description": "dec of ",
-  "price": 18
+  "productName": "Bisli",
+  "description": "dec of",
+  "price": 16
 }
 ###
 
@@ -40,10 +51,3 @@ Content-Type: application/json
 
 ###
 
-POST {{FirstWebApp_HostAddress}}/auth/Login
-Content-Type: application/json
-{
-  "userName": "david",
-  "password": "12345678"
-}
-###
