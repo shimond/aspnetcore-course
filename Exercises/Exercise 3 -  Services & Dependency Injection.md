@@ -42,7 +42,7 @@ Extend your minimal .NET  Web API to implement a simple customer management syst
 Your record should be declared as:
 
 ```csharp
-public record Customer(Guid Id, string Name, string Email);
+public record Customer(Guid Id, string Name, string Email);```
 
 
 ```json
