@@ -3,7 +3,7 @@
 
 ## Project Overview
 
-Enhance your minimal .NET 7 Web API to demonstrate configuration management using a real-world scenario: notification settings for an email service.
+Enhance your minimal .NET  Web API to demonstrate configuration management using a real-world scenario: notification settings for an email service.
 
 When complete, your application will:
 
