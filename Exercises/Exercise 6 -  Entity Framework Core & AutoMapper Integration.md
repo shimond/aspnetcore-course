@@ -1,5 +1,10 @@
 # Exercise 6: Entity Framework Core & AutoMapper Integration
 
+
+## Introduction
+
+In this exercise, you will enhance the existing customer management API by introducing a full persistence layer with Entity Framework Core and mapping between your domain entities and data transfer objects (DTOs) using AutoMapper. You will implement an EF-backed repository alongside the file-based one, swap registrations via dependency injection, and practice decoupling your API contract from the domain model.
+
 ## Installation
 
 From your project root, install the required packages:
@@ -17,7 +22,7 @@ Extend the customer management API from previous exercises to:
 
 1. **Use EF Core with an in-memory database for persistence.**  
  
-2. **Implement a second ICustomerRepository using DbContext*  
+2. **Implement a second ICustomerRepository using DbContext**
 
 3. **Switch your DI registration from the JSON file repository to the EF Core repository.**  
 
@@ -43,7 +48,6 @@ public class CustomerDto
 }
 ```
 
-Create a mapping profile
 
 ## Points of Emphasis
 
