@@ -33,3 +33,39 @@ builder.Services.AddDbContext<CustomerDbContext>(opts =>
     opts.UseInMemoryDatabase("CustomerDb"));
 ```
 
+Create dto for the customer entity
+```csharp
+public class CustomerDto
+{
+    public Guid Uid { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+```
+
+Create a mapping profile
+
+## Points of Emphasis
+
+- **DbContext & EF Core Basics**  
+  Learn how `CustomerDbContext` manages entities and how to configure the in-memory provider.
+
+- **In-Memory Database for Development**  
+  Understand why an in-memory database is useful for prototyping and testing without external dependencies.
+
+- **Repository Abstraction**  
+  Compare the file-based repository (`CustomerJsonRepository`) with the EF-based `EfCustomerRepository` implementing the same interface.
+
+- **DTO vs. Entity**  
+  See how `CustomerDto` decouples your API contract from the domain model; practice mapping `Id` ↔ `Uid`.
+
+- **AutoMapper Profiles**  
+  Master configuring mapping rules in a `Profile` and how AutoMapper integrates via DI.
+
+- **Minimal API with Typed DTOs**  
+  Practice mapping DTOs in endpoint handlers for clearer, more maintainable API signatures.
+
+- **Dependency Injection**  
+  Observe how swapping implementations (JSON vs. EF Core) is trivial when both implement `ICustomerRepository` and are registered in DI.
+
+
