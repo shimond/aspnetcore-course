@@ -15,7 +15,7 @@ Extend your minimal .NET  Web API to implement a simple customer management syst
 3. **Manage customer data in a JSON file**:
    - Create `customers.json` at the application root.
    - Populate it with an array of customer objects matching your `Customer` record.
-   - In a controller, read from and write to this file to handle **GET** and **POST** operations.
+   - In a controller, read from and write to this file to handle **GET** ,  **POST**, **PUT**, and **DELETE** operations.
 
 4. **Introduce Repository and Service**:
    - Define `ICustomerRepository` for file-based data access; implement it in `CustomerJsonRepository`.
